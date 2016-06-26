@@ -155,6 +155,7 @@ public interface StencilConstants {
   final String PROPERTY_USERTASK_CANDIDATE_USERS = "candidateUsers";
   final String PROPERTY_USERTASK_CANDIDATE_GROUPS = "candidateGroups";
   final String PROPERTY_USERTASK_CATEGORY = "categorydefinition";
+  final String PROPERTY_USERTASK_CUSTOM_EXTENSION_ELEMENTS = "customextensionelements";
 
   final String PROPERTY_SERVICETASK_CLASS = "servicetaskclass";
   final String PROPERTY_SERVICETASK_EXPRESSION = "servicetaskexpression";
@@ -236,4 +237,8 @@ public interface StencilConstants {
   
   final String PROPERTY_TERMINATE_ALL = "terminateall";
   final String PROPERTY_TERMINATE_MULTI_INSTANCE = "terminateMultiInstance";
+  
+  final String PROPERTY_EXTENSION_ELEMENT_NAME = "name";
+  final String PROPERTY_EXTENSION_ELEMENT_TEXT = "elementText";
+  final String PROPERTY_EXTENSION_ELEMENT_CHILDS = "childElements";
 }

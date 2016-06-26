@@ -17,6 +17,7 @@
  */
 package com.activiti.rest.runtime;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,4 +41,13 @@ public class ProcessDefinitionsResource extends AbstractProcessDefinitionsResour
 	    return super.getProcessDefinitions(latest, appDefinitionId);
     }
 	
+	 /**
+     * GET /rest/app-definitions/{appDefinitionId}/process-definitions -> Get process definitions by appDefinitionId
+     */
+    @RequestMapping(value = "/rest/app-definitions/{appDefinitionId}/process-definitions", method = RequestMethod.GET)
+    @Timed
+    public ResultListDataRepresentation getProcessDefinitionsModels(    		
+    		@PathVariable(value="appDefinitionId") Long appDefinitionId) {    
+       return super.getProcessDefinitionsModels(appDefinitionId);
+    }	
 }

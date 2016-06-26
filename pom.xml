@@ -10,15 +10,15 @@
   <parent>
     <groupId>org.sonatype.oss</groupId>
     <artifactId>oss-parent</artifactId>
-    <version>7</version>
+    <version>9</version>
   </parent>
 
   <packaging>pom</packaging>
   <version>6.0.0.Beta3-SNAPSHOT</version>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.framework.version>4.1.5.RELEASE</spring.framework.version>
-    <spring.security.version>3.2.3.RELEASE</spring.security.version>
+    <spring.framework.version>4.2.6.RELEASE</spring.framework.version>
+    <spring.security.version>4.1.0.RELEASE</spring.security.version>
     <mule.version>3.5.0</mule.version>
     <cxf.version>2.6.14</cxf.version>
     <batik.version>1.7</batik.version>
@@ -84,18 +84,18 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>1.7.6</version>
+        <version>1.7.21</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>jcl-over-slf4j</artifactId>
-        <version>1.7.6</version>
+        <version>1.7.21</version>
       </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-log4j12</artifactId>
-        <version>1.7.6</version>
-      </dependency>
+    	<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-slf4j-impl</artifactId>   
+  <version>2.5</version>
+</dependency>
       <dependency>
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
@@ -146,13 +146,7 @@
         <groupId>javax.mail</groupId>
         <artifactId>mail</artifactId>
         <version>1.4.1</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.persistence</groupId>
-        <artifactId>persistence-api</artifactId>
-        <version>1.0</version>
-        <scope>provided</scope>
-      </dependency>
+      </dependency>      
       <dependency>
     	<groupId>javax.enterprise.concurrent</groupId>
     	<artifactId>javax.enterprise.concurrent-api</artifactId>
@@ -175,6 +169,12 @@
         <artifactId>mysql-connector-java</artifactId>
         <version>5.1.27</version>
         <scope>test</scope>
+      </dependency>
+	 <dependency>
+        <groupId>com.microsoft.sqlserver</groupId>
+        <artifactId>sqljdbc4</artifactId>
+        <version>4.2</version>
+        <!-- <scope>test</scope> -->
       </dependency>
       <dependency>
         <groupId>com.ibm.db2.jcc</groupId>
@@ -385,7 +385,7 @@
       <dependency>
         <groupId>org.mybatis</groupId>
         <artifactId>mybatis</artifactId>
-        <version>3.3.0</version>
+        <version>3.4.0</version>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
@@ -414,7 +414,7 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-jdk14</artifactId>
-        <version>1.7.6</version>
+        <version>1.7.21</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
@@ -540,17 +540,17 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>
-        <version>2.2.3</version>
+        <version>2.7.5</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
-        <version>2.2.3</version>
+        <version>2.7.5</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
-        <version>2.2.3</version>
+        <version>2.7.5</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
@@ -631,7 +631,13 @@
             <artifactId>catch-exception</artifactId>
             <version>1.2.0</version>
             <scope>test</scope>
-        </dependency>
+        </dependency>      
+    <dependency>
+	    <groupId>org.hibernate.javax.persistence</groupId>
+	    <artifactId>hibernate-jpa-2.1-api</artifactId>
+	    <version>1.0.0.Final</version>
+	    <scope>provided</scope>
+	</dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -648,7 +654,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
+        <version>3.5.1</version>
         <configuration>
           <source>1.7</source>
           <target>1.7</target>
@@ -707,7 +713,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>2.3.2</version>
+          <version>2.6</version>
         </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings
           only. It has no influence on the Maven build itself. -->
@@ -722,7 +728,7 @@
                   <pluginExecutionFilter>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
-                    <versionRange>[2.1.0,)</versionRange>
+                    <versionRange>[3.0.1,)</versionRange>
                     <goals>
                       <goal>manifest</goal>
                     </goals>
@@ -738,7 +744,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
-          <version>2.4.2</version>
+          <version>2.5.3</version>
           <configuration>
             <mavenExecutorId>forked-path</mavenExecutorId>
             <useReleaseProfile>false</useReleaseProfile>
@@ -791,6 +797,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
+             <version>3.0.0</version>
             <executions>
               <execution>
                 <goals>

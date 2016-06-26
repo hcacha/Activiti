@@ -102,10 +102,9 @@
 
     <!-- Logging, using Log4j as SLF4J implementation -->
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-    </dependency>
-
+    	<groupId>org.apache.logging.log4j</groupId>
+    	<artifactId>log4j-slf4j-impl</artifactId>  
+	</dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
@@ -145,19 +144,19 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>4.3.1.Final</version>
+      <version>5.2.4.Final</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>4.1.9.Final</version>
+      <version>4.3.11.Final</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
-      <version>4.1.9.Final</version>
+      <version>4.3.11.Final</version>
       <scope>test</scope>
     </dependency>
     <dependency>

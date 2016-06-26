@@ -36,7 +36,7 @@ public class CommandExecutorImpl implements CommandExecutor {
 
   @Override
   public <T> T execute(CommandConfig config, Command<T> command) {
-    return first.execute(config, command);
+	  return first.execute(config, command);
   }
 
 }

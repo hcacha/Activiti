@@ -38,60 +38,62 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import javax.inject.Inject;
 import java.util.List;
 
-@Configuration
-@ComponentScan(value = {"com.activiti.rest"})
-@EnableMetrics(proxyTargetClass = true) 
-@EnableAsync
-public class AppDispatcherServletConfiguration extends WebMvcConfigurationSupport {
+//@Configuration
+//@ComponentScan(value = {"com.activiti.rest"})
+//@EnableMetrics(proxyTargetClass = true) 
+//@EnableAsync
+public class AppDispatcherServletConfiguration 
+//extends WebMvcConfigurationSupport 
+{
 
-    private final Logger log = LoggerFactory.getLogger(AppDispatcherServletConfiguration.class);
-
-    @Inject
-    private ObjectMapper objectMapper;
-    
-    @Inject
-    private Environment environment;
-
-    @Bean
-    public SessionLocaleResolver localeResolver() {
-        return new SessionLocaleResolver();
-    }
-
-    @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor() {
-        log.debug("Configuring localeChangeInterceptor");
-        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-        localeChangeInterceptor.setParamName("language");
-        return localeChangeInterceptor;
-    }
-
-    @Bean
-    public MultipartResolver multipartResolver() {
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(environment.getProperty("file.upload.max.size", Long.class));
-        return multipartResolver;
-    }
-
-    @Bean
-    public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-        log.debug("Creating requestMappingHandlerMapping");
-        RequestMappingHandlerMapping requestMappingHandlerMapping = new RequestMappingHandlerMapping();
-        requestMappingHandlerMapping.setUseSuffixPatternMatch(false);
-        requestMappingHandlerMapping.setRemoveSemicolonContent(false);
-        Object[] interceptors = {localeChangeInterceptor()};
-        requestMappingHandlerMapping.setInterceptors(interceptors);
-        return requestMappingHandlerMapping;
-    }
-    
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        addDefaultHttpMessageConverters(converters);
-        for (HttpMessageConverter<?> converter: converters) {
-            if (converter instanceof MappingJackson2HttpMessageConverter) {
-                MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = (MappingJackson2HttpMessageConverter) converter;
-                jackson2HttpMessageConverter.setObjectMapper(objectMapper);
-                break;
-            }
-        }
-    }
+//    private final Logger log = LoggerFactory.getLogger(AppDispatcherServletConfiguration.class);
+//
+//    @Inject
+//    private ObjectMapper objectMapper;
+//    
+//    @Inject
+//    private Environment environment;
+//
+//    @Bean
+//    public SessionLocaleResolver localeResolver() {
+//        return new SessionLocaleResolver();
+//    }
+//
+//    @Bean
+//    public LocaleChangeInterceptor localeChangeInterceptor() {
+//        log.debug("Configuring localeChangeInterceptor");
+//        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+//        localeChangeInterceptor.setParamName("language");
+//        return localeChangeInterceptor;
+//    }
+//
+//    @Bean
+//    public MultipartResolver multipartResolver() {
+//        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+//        multipartResolver.setMaxUploadSize(environment.getProperty("file.upload.max.size", Long.class));
+//        return multipartResolver;
+//    }
+//
+//    @Bean
+//    public RequestMappingHandlerMapping requestMappingHandlerMapping() {
+//        log.debug("Creating requestMappingHandlerMapping");
+//        RequestMappingHandlerMapping requestMappingHandlerMapping = new RequestMappingHandlerMapping();
+//        requestMappingHandlerMapping.setUseSuffixPatternMatch(false);
+//        requestMappingHandlerMapping.setRemoveSemicolonContent(false);
+//        Object[] interceptors = {localeChangeInterceptor()};
+//        requestMappingHandlerMapping.setInterceptors(interceptors);
+//        return requestMappingHandlerMapping;
+//    }
+//    
+//    @Override
+//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        addDefaultHttpMessageConverters(converters);
+//        for (HttpMessageConverter<?> converter: converters) {
+//            if (converter instanceof MappingJackson2HttpMessageConverter) {
+//                MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = (MappingJackson2HttpMessageConverter) converter;
+//                jackson2HttpMessageConverter.setObjectMapper(objectMapper);
+//                break;
+//            }
+//        }
+//    }
 }

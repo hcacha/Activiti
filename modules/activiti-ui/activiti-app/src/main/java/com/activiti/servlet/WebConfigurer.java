@@ -39,77 +39,79 @@ import com.activiti.conf.ApplicationConfiguration;
 /**
  * Configuration of web application with Servlet 3.0 APIs.
  */
-public class WebConfigurer implements ServletContextListener {
+public class WebConfigurer 
+//implements ServletContextListener 
+{
 	
-    private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
-
-    public AnnotationConfigWebApplicationContext context;
-    
-    public void setContext(AnnotationConfigWebApplicationContext context) {
-        this.context = context;
-    }
-    
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        log.debug("Configuring Spring root application context");
-
-        ServletContext servletContext = sce.getServletContext();
-
-        AnnotationConfigWebApplicationContext rootContext = null;
-
-        if(context == null) {
-            rootContext = new AnnotationConfigWebApplicationContext();
-            rootContext.register(ApplicationConfiguration.class);
-            rootContext.refresh();
-        } else {
-            rootContext = context;
-        }
-
-        servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootContext);
-
-        EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
-
-        initSpring(servletContext, rootContext);
-        initSpringSecurity(servletContext, disps);
-
-        log.debug("Web application fully configured");
-    }
-
-    /**
-     * Initializes Spring and Spring MVC.
-     */
-    private void initSpring(ServletContext servletContext, AnnotationConfigWebApplicationContext rootContext) {
-        log.debug("Configuring Spring Web application context");
-        AnnotationConfigWebApplicationContext appDispatcherServletConfiguration = new AnnotationConfigWebApplicationContext();
-        appDispatcherServletConfiguration.setParent(rootContext);
-        appDispatcherServletConfiguration.register(AppDispatcherServletConfiguration.class);
-
-        log.debug("Registering Spring MVC Servlet");
-        ServletRegistration.Dynamic appDispatcherServlet = servletContext.addServlet("appDispatcher", 
-                new DispatcherServlet(appDispatcherServletConfiguration));
-        appDispatcherServlet.addMapping("/app/*");
-        appDispatcherServlet.setLoadOnStartup(1);
-        appDispatcherServlet.setAsyncSupported(true);
-    }
-
-    /**
-     * Initializes Spring Security.
-     */
-    private void initSpringSecurity(ServletContext servletContext, EnumSet<DispatcherType> disps) {
-        log.debug("Registering Spring Security Filter");
-        FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain", new DelegatingFilterProxy());
-
-        springSecurityFilter.addMappingForUrlPatterns(disps, false, "/*");
-        springSecurityFilter.setAsyncSupported(true);
-    }
-
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        log.info("Destroying Web application");
-        WebApplicationContext ac = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
-        AnnotationConfigWebApplicationContext gwac = (AnnotationConfigWebApplicationContext) ac;
-        gwac.close();
-        log.debug("Web application destroyed");
-    }
+//    private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
+//
+//    public AnnotationConfigWebApplicationContext context;
+//    
+//    public void setContext(AnnotationConfigWebApplicationContext context) {
+//        this.context = context;
+//    }
+//    
+//    @Override
+//    public void contextInitialized(ServletContextEvent sce) {
+//        log.debug("Configuring Spring root application context");
+//
+//        ServletContext servletContext = sce.getServletContext();
+//
+//        AnnotationConfigWebApplicationContext rootContext = null;
+//
+//        if(context == null) {
+//            rootContext = new AnnotationConfigWebApplicationContext();
+//            rootContext.register(ApplicationConfiguration.class);
+//            rootContext.refresh();
+//        } else {
+//            rootContext = context;
+//        }
+//
+//        servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootContext);
+//
+//        EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
+//
+//        //initSpring(servletContext, rootContext);
+//        //initSpringSecurity(servletContext, disps);
+//
+//        log.debug("Web application fully configured");
+//    }
+//
+//    /**
+//     * Initializes Spring and Spring MVC.
+//     */
+//    private void initSpring(ServletContext servletContext, AnnotationConfigWebApplicationContext rootContext) {
+//        log.debug("Configuring Spring Web application context");
+//        AnnotationConfigWebApplicationContext appDispatcherServletConfiguration = new AnnotationConfigWebApplicationContext();
+//        appDispatcherServletConfiguration.setParent(rootContext);
+//        appDispatcherServletConfiguration.register(AppDispatcherServletConfiguration.class);
+//
+//        log.debug("Registering Spring MVC Servlet");
+//        ServletRegistration.Dynamic appDispatcherServlet = servletContext.addServlet("appDispatcher", 
+//                new DispatcherServlet(appDispatcherServletConfiguration));
+//        appDispatcherServlet.addMapping("/app/*");
+//        appDispatcherServlet.setLoadOnStartup(1);
+//        appDispatcherServlet.setAsyncSupported(true);
+//    }
+//
+//    /**
+//     * Initializes Spring Security.
+//     */
+//    private void initSpringSecurity(ServletContext servletContext, EnumSet<DispatcherType> disps) {
+//        log.debug("Registering Spring Security Filter");
+//        FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain", new DelegatingFilterProxy());
+//
+//        springSecurityFilter.addMappingForUrlPatterns(disps, false, "/*");
+//        springSecurityFilter.setAsyncSupported(true);
+//    }
+//
+//
+//    @Override
+//    public void contextDestroyed(ServletContextEvent sce) {
+//        log.info("Destroying Web application");
+//        WebApplicationContext ac = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
+//        AnnotationConfigWebApplicationContext gwac = (AnnotationConfigWebApplicationContext) ac;
+//        gwac.close();
+//        log.debug("Web application destroyed");
+//    }
 }

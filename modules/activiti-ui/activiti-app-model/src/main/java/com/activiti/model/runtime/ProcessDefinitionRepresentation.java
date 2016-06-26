@@ -36,7 +36,7 @@ public class ProcessDefinitionRepresentation extends AbstractRepresentation {
     protected int version;
     protected String deploymentId;
     protected String tenantId;
-    protected boolean hasStartForm;
+    protected boolean hasStartForm;    
     
     public ProcessDefinitionRepresentation(ProcessDefinition processDefinition) {
         this.id = processDefinition.getId();
@@ -47,7 +47,7 @@ public class ProcessDefinitionRepresentation extends AbstractRepresentation {
         this.version = processDefinition.getVersion();
         this.deploymentId = processDefinition.getDeploymentId();
         this.tenantId = processDefinition.getTenantId();
-        this.hasStartForm = processDefinition.hasStartFormKey();
+        this.hasStartForm = processDefinition.hasStartFormKey();        
     }
     
     public ProcessDefinitionRepresentation() {}
@@ -122,6 +122,5 @@ public class ProcessDefinitionRepresentation extends AbstractRepresentation {
     @JsonProperty("hasStartForm")
     public boolean getHasStartForm() {
         return hasStartForm;
-    }
-    
+    }   
 }

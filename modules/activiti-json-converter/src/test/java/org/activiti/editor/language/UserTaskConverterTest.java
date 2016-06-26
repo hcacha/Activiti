@@ -36,7 +36,7 @@ public class UserTaskConverterTest extends AbstractConverterTest {
     return "test.usertaskmodel.json";
   }
 
-  private void validateModel(BpmnModel model) {
+  protected void validateModel(BpmnModel model) {
     FlowElement flowElement = model.getMainProcess().getFlowElement("usertask", true);
     assertNotNull(flowElement);
     assertTrue(flowElement instanceof UserTask);

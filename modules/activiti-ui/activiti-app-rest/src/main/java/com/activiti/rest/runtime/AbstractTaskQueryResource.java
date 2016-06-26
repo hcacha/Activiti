@@ -17,6 +17,8 @@
  */
 package com.activiti.rest.runtime;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -135,12 +137,28 @@ public abstract class AbstractTaskQueryResource {
 
         JsonNode dueBeforeNode = requestNode.get("dueBefore");
         if (dueBeforeNode != null &&  dueBeforeNode.isNull() == false) {
-            handleDueBefore(taskInfoQueryWrapper, dueBeforeNode);
+        	try
+        	{
+        		handleDueBefore(taskInfoQueryWrapper, dueBeforeNode);
+        	}
+        	catch(ParseException ex)
+        	{
+        		throw new BadRequestException("Invalid date dueBefore",ex);
+        	}       	
+            
         }
 
         JsonNode dueAfterNode = requestNode.get("dueAfter");
         if (dueAfterNode != null && dueAfterNode.isNull() == false) {
-            handleDueAfter(taskInfoQueryWrapper, dueAfterNode);
+        	try
+        	{
+        		handleDueAfter(taskInfoQueryWrapper, dueAfterNode);
+        	}
+        	catch(ParseException ex)
+        	{
+        		throw new BadRequestException("Invalid date dueAfter",ex);
+        	}   
+            
         }
         
         JsonNode sortNode = requestNode.get("sort");
@@ -248,15 +266,15 @@ public abstract class AbstractTaskQueryResource {
 		taskInfoQueryWrapper.getTaskInfoQuery().processDefinitionId(processDefinitionId);
 	}
 
-    private void handleDueBefore(TaskInfoQueryWrapper taskInfoQueryWrapper, JsonNode dueBeforeNode) {
+    private void handleDueBefore(TaskInfoQueryWrapper taskInfoQueryWrapper, JsonNode dueBeforeNode) throws java.text.ParseException {
         String date = dueBeforeNode.asText();
-        Date d = ISO8601Utils.parse(date);
+        Date d = ISO8601Utils.parse(date,new ParsePosition(0));
         taskInfoQueryWrapper.getTaskInfoQuery().taskDueBefore(d);
     }
 
-    private void handleDueAfter(TaskInfoQueryWrapper taskInfoQueryWrapper, JsonNode dueAfterNode) {
-        String date = dueAfterNode.asText();
-        Date d = ISO8601Utils.parse(date);
+    private void handleDueAfter(TaskInfoQueryWrapper taskInfoQueryWrapper, JsonNode dueAfterNode) throws java.text.ParseException {
+        String date = dueAfterNode.asText();        
+        Date d = ISO8601Utils.parse(date,new ParsePosition(0));
         taskInfoQueryWrapper.getTaskInfoQuery().taskDueAfter(d);
     }
 

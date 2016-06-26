@@ -19,6 +19,9 @@ import java.util.Map;
 import org.activiti.bpmn.model.BaseElement;
 import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.FormProperty;
+import org.activiti.bpmn.model.FormValue;
+import org.activiti.bpmn.model.StartEvent;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.editor.language.json.converter.util.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +35,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * @author Tijs Rademakers
  */
 public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
+	
+	final String CUSTOM_EXTENSION_ELEMENT_NAME = "activiti-custom-extension-elements";
 
     public static void fillTypes(Map<String, Class<? extends BaseBpmnJsonConverter>> convertersToBpmnMap,
             Map<Class<? extends BaseElement>, Class<? extends BaseBpmnJsonConverter>> convertersToJsonMap) {
@@ -72,7 +77,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                 
                 assignmentValuesNode.put("type", "idm");
                 ObjectNode idmNode = objectMapper.createObjectNode();
-                assignmentValuesNode.put("idm", idmNode);
+                assignmentValuesNode.set("idm", idmNode);
                 
                 List<ExtensionElement> canCompleteList = userTask.getExtensionElements().get("initiator-can-complete");
                 if (CollectionUtils.isNotEmpty(canCompleteList)) {
@@ -82,7 +87,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                 if (StringUtils.isNotEmpty(userTask.getAssignee())) {
                     ObjectNode assigneeNode = objectMapper.createObjectNode();
                     if (userTask.getAssignee().contains("${taskAssignmentBean.assignTaskToAssignee(")) {
-                        idmNode.put("assigneeField", assigneeNode);
+                        idmNode.set("assigneeField", assigneeNode);
                         idmNode.put("type", "user");
                         
                         fillProperty("id", "activiti-idm-assignee-field", assigneeNode, userTask);
@@ -90,7 +95,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                         
                     } else {
                         assigneeNode.put("id", Long.valueOf(userTask.getAssignee()));
-                        idmNode.put("assignee", assigneeNode);
+                        idmNode.set("assignee", assigneeNode);
                         idmNode.put("type", "user");
                         
                         fillProperty("externalId", "assignee-info-externalid", assigneeNode, userTask);
@@ -125,7 +130,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                         
                         if (candidateFieldIds.size() > 0) {
                             ArrayNode candidateUserFieldsNode = objectMapper.createArrayNode();
-                            idmNode.put("candidateUserFields", candidateUserFieldsNode);
+                            idmNode.set("candidateUserFields", candidateUserFieldsNode);
                             for (String fieldId : candidateFieldIds) {
                                 ObjectNode fieldNode = objectMapper.createObjectNode();
                                 fieldNode.put("id", fieldId);
@@ -143,7 +148,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                     
                     if (candidateUserIds.size() > 0) {
                         ArrayNode candidateUsersNode = objectMapper.createArrayNode();
-                        idmNode.put("candidateUsers", candidateUsersNode);
+                        idmNode.set("candidateUsers", candidateUsersNode);
                         idmNode.put("type", "users");
                         for (String candidateUser : candidateUserIds) {
                             ObjectNode candidateUserNode = objectMapper.createObjectNode();
@@ -183,7 +188,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                         
                         if (candidateFieldIds.size() > 0) {
                             ArrayNode candidateGroupFieldsNode = objectMapper.createArrayNode();
-                            idmNode.put("candidateGroupFields", candidateGroupFieldsNode);
+                            idmNode.set("candidateGroupFields", candidateGroupFieldsNode);
                             for (String fieldId : candidateFieldIds) {
                                 ObjectNode fieldNode = objectMapper.createObjectNode();
                                 fieldNode.put("id", fieldId);
@@ -201,7 +206,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                     
                     if (candidateGroupIds.size() > 0) {
                         ArrayNode candidateGroupsNode = objectMapper.createArrayNode();
-                        idmNode.put("candidateGroups", candidateGroupsNode);
+                        idmNode.set("candidateGroups", candidateGroupsNode);
                         idmNode.put("type", "groups");
                         for (String candidateGroup : candidateGroupIds) {
                             ObjectNode candidateGroupNode = objectMapper.createObjectNode();
@@ -228,7 +233,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                         candidateNode.put("value", candidateUser);
                         candidateArrayNode.add(candidateNode);
                     }
-                    assignmentValuesNode.put(PROPERTY_USERTASK_CANDIDATE_USERS, candidateArrayNode);
+                    assignmentValuesNode.set(PROPERTY_USERTASK_CANDIDATE_USERS, candidateArrayNode);
                 }
               
                 if (CollectionUtils.isNotEmpty(userTask.getCandidateGroups())) {
@@ -238,12 +243,12 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                         candidateNode.put("value", candidateGroup);
                         candidateArrayNode.add(candidateNode);
                     }
-                    assignmentValuesNode.put(PROPERTY_USERTASK_CANDIDATE_GROUPS, candidateArrayNode);
+                    assignmentValuesNode.set(PROPERTY_USERTASK_CANDIDATE_GROUPS, candidateArrayNode);
                 }
             }
             
-            assignmentNode.put("assignment", assignmentValuesNode);
-            propertiesNode.put(PROPERTY_USERTASK_ASSIGNMENT, assignmentNode);
+            assignmentNode.set("assignment", assignmentValuesNode);
+            propertiesNode.set(PROPERTY_USERTASK_ASSIGNMENT, assignmentNode);
         }
         
         if (userTask.getPriority() != null) {
@@ -257,7 +262,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                 ObjectNode formRefNode = objectMapper.createObjectNode();
                 formRefNode.put("id", Long.valueOf(formIdExtensions.get(0).getElementText()));
                 formRefNode.put("name", formNameExtensions.get(0).getElementText());
-                propertiesNode.put(PROPERTY_FORM_REFERENCE, formRefNode);
+                propertiesNode.set(PROPERTY_FORM_REFERENCE, formRefNode);
                 
             } else if (userTask.getFormKey().startsWith("FORM_REFERENCE")) {
                 String formReference = userTask.getFormKey().replace("FORM_REFERENCE", "");
@@ -268,7 +273,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                     ObjectNode formRefNode = objectMapper.createObjectNode();
                     formRefNode.put("id", Long.valueOf(formIdString));
                     formRefNode.put("name", formNameString);
-                    propertiesNode.put(PROPERTY_FORM_REFERENCE, formRefNode);
+                    propertiesNode.set(PROPERTY_FORM_REFERENCE, formRefNode);
                 }
                 
             } else {
@@ -280,6 +285,8 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
         setPropertyValue(PROPERTY_USERTASK_CATEGORY, userTask.getCategory(), propertiesNode);
         
         addFormProperties(userTask.getFormProperties(), propertiesNode);
+        
+        addCustomExtensionElement(userTask,propertiesNode);
     }
     
     protected int getExtensionElementValueAsInt(String name, UserTask userTask) {
@@ -374,7 +381,9 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                 }
             }
         }
-        convertJsonToFormProperties(elementNode, task);
+        convertJsonToFormProperties(elementNode, task);        
+        convertJsonToCustomExtensionElement(elementNode,task);
+        
         return task;
     }
     
@@ -556,12 +565,109 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
         extensionElement.setName(name);
         extensionElement.setElementText(elementText);
         task.addExtensionElement(extensionElement);
-    }
-    
+    }   
     protected void fillProperty(String propertyName, String extensionElementName, ObjectNode elementNode, UserTask task) {
         List<ExtensionElement> extensionElementList = task.getExtensionElements().get(extensionElementName);
         if (CollectionUtils.isNotEmpty(extensionElementList)) {
             elementNode.put(propertyName, extensionElementList.get(0).getElementText());
         }
+        
     }
+    protected ExtensionElement createExtensionElement(String name, String elementText) {
+        ExtensionElement extensionElement = new ExtensionElement();
+        extensionElement.setNamespace(NAMESPACE);
+        extensionElement.setNamespacePrefix("modeler");
+        extensionElement.setName(name);
+        extensionElement.setElementText(elementText);
+        return extensionElement;
+    }   
+    protected void convertJsonToCustomExtensionElement(JsonNode objectNode,UserTask task) {
+        JsonNode extensionElementsNode = getProperty(PROPERTY_USERTASK_CUSTOM_EXTENSION_ELEMENTS, objectNode);
+        if (extensionElementsNode != null) {
+        	extensionElementsNode = BpmnJsonConverterUtil.validateIfNodeIsTextual(extensionElementsNode);
+            JsonNode propertiesArray = extensionElementsNode.get("customExtensionElements");
+            if (propertiesArray != null) {
+            	ExtensionElement baseExtensionElement= null;
+                for (JsonNode extensionNode : propertiesArray) {
+                    JsonNode extensionName = extensionNode.get(PROPERTY_EXTENSION_ELEMENT_NAME);
+                    if (extensionName != null && StringUtils.isNotEmpty(extensionName.asText())) {
+                    	if(baseExtensionElement==null) baseExtensionElement=createExtensionElement(CUSTOM_EXTENSION_ELEMENT_NAME, "");
+                    	
+                    	ExtensionElement extensionElement=createExtensionElement(extensionName.asText(),getValueAsString(PROPERTY_EXTENSION_ELEMENT_TEXT, extensionNode));
+                    	
+                    	JsonNode childsNode= extensionNode.get(PROPERTY_EXTENSION_ELEMENT_CHILDS);
+                    	if(childsNode !=null){
+                    		createExtensionElementsChilds(childsNode,extensionElement);
+                    	}
+                    	baseExtensionElement.addChildElement(extensionElement);                    
+                    }
+                }
+                if(baseExtensionElement!=null){
+                	 task.addExtensionElement(baseExtensionElement);
+                }
+            }
+        }
+    }
+    private void  createExtensionElementsChilds(JsonNode propertiesArray,ExtensionElement extensionElementParent){
+    	
+    	 for (JsonNode extensionNode : propertiesArray) {
+    		 JsonNode extensionName = extensionNode.get(PROPERTY_EXTENSION_ELEMENT_NAME);
+             if (extensionName != null && StringUtils.isNotEmpty(extensionName.asText())) {
+            	ExtensionElement extensionElement=createExtensionElement(extensionName.asText(),getValueAsString(PROPERTY_EXTENSION_ELEMENT_TEXT, extensionNode));
+            	 
+            	JsonNode childsNode= extensionNode.get(PROPERTY_EXTENSION_ELEMENT_CHILDS);
+             	if(childsNode !=null){
+             		createExtensionElementsChilds(childsNode,extensionElement);
+             	}             	
+             	extensionElementParent.addChildElement(extensionElement); 
+             }         	
+    	 }
+    }
+    protected void addCustomExtensionElement(UserTask userTask, ObjectNode propertiesNode) {
+    	
+    	List<ExtensionElement> elements= userTask.getExtensionElements().get(CUSTOM_EXTENSION_ELEMENT_NAME);
+    	if(elements==null || elements.isEmpty()){
+    		return;
+    	}
+    	ExtensionElement extensionElement= elements.get(0);
+        Map<String, List<ExtensionElement>> childsElements= extensionElement.getChildElements();    
+        if(childsElements==null || childsElements.isEmpty()){
+        	return;
+        }        
+        ObjectNode customExtensionElementNode = objectMapper.createObjectNode();
+    	ArrayNode propertiesChildArrayNode = objectMapper.createArrayNode();
+     	for(String key :childsElements.keySet()){     		
+     		ExtensionElement otherElement= childsElements.get(key).get(0);
+     		ObjectNode propertyItemNode = objectMapper.createObjectNode();            
+            
+            propertyItemNode.put(PROPERTY_EXTENSION_ELEMENT_NAME, otherElement.getName());
+            propertyItemNode.put(PROPERTY_EXTENSION_ELEMENT_TEXT, otherElement.getElementText());           
+                        
+            addChildsCustomExtensionElement(otherElement,propertyItemNode);            
+     		propertiesChildArrayNode.add(propertyItemNode);
+     	}        
+     	customExtensionElementNode.set("customExtensionElements", propertiesChildArrayNode);
+        propertiesNode.set(PROPERTY_USERTASK_CUSTOM_EXTENSION_ELEMENTS, customExtensionElementNode);
+    }
+    private void addChildsCustomExtensionElement(ExtensionElement extensionElement, ObjectNode propertiesNodeParent) {
+    	 Map<String, List<ExtensionElement>> childsElements= extensionElement.getChildElements();         
+         if(childsElements!=null && !childsElements.isEmpty()){
+        	ArrayNode propertiesChildArrayNode = null;
+         	for(String key :childsElements.keySet()){
+         		if(propertiesChildArrayNode==null) propertiesChildArrayNode=objectMapper.createArrayNode();
+         		ExtensionElement otherElement= childsElements.get(key).get(0);
+         		ObjectNode propertyItemNode = objectMapper.createObjectNode();            
+                
+                propertyItemNode.put(PROPERTY_EXTENSION_ELEMENT_NAME, otherElement.getName());
+                propertyItemNode.put(PROPERTY_EXTENSION_ELEMENT_TEXT, otherElement.getElementText());
+                
+                addChildsCustomExtensionElement(otherElement,propertyItemNode);
+                
+         		propertiesChildArrayNode.add(propertyItemNode);
+         	}
+         	if(propertiesChildArrayNode!=null) propertiesNodeParent.set(PROPERTY_EXTENSION_ELEMENT_CHILDS, propertiesChildArrayNode);
+         }   
+    }
+
+
 }

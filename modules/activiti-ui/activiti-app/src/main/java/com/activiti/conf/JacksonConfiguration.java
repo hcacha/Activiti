@@ -22,27 +22,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author Joram Barrez
  */
-@Configuration
+//@Configuration
 public class JacksonConfiguration {
 
-    @Bean()
-    public ObjectMapper objectMapper() {
-        
-    	// To avoid instantiating and configuring the mapper everywhere
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        
-		// Metrics serialization
-		mapper.registerModule(new MetricsModule(TimeUnit.SECONDS, TimeUnit.SECONDS, true));
-
-        
-        return mapper;
-    }
+//    @Bean()
+//    @Primary
+//    public ObjectMapper objectMapper() {
+//        
+//    	// To avoid instantiating and configuring the mapper everywhere
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+//        
+//		// Metrics serialization
+//		mapper.registerModule(new MetricsModule(TimeUnit.SECONDS, TimeUnit.SECONDS, true));
+//
+//        
+//        return mapper;
+//    }
 
 }

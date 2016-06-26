@@ -1,0 +1,22 @@
+identity:
+  client:
+    clientId: mySpringRest 
+    clientSecret: api-secret   
+    accessTokenUri: https://localhost:44300/identity/connect/token
+    userAuthorizationUri: https://localhost:44300/identity/connect/authorize
+    tokenName: oauth_token
+    authenticationScheme: query
+    clientAuthenticationScheme: form
+    scope: mySpringRest
+    introspectionEndpoint: https://localhost:44300/identity/connect/introspect
+  resource:
+    userInfoUri: https://localhost:44300/identity/connect/userinfo
+      
+spring:
+  resources:
+    chain:
+      enabled: true
+      
+logging:
+  level:
+    org.springframework.security: DEBUG

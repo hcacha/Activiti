@@ -18,6 +18,7 @@
       <plugin>
         <groupId>org.zeroturnaround</groupId>
         <artifactId>jrebel-maven-plugin</artifactId>
+         <version>1.1.1</version>
         <executions>
           <execution>
             <id>generate-rebel-xml</id>
@@ -29,16 +30,32 @@
         </executions>
       </plugin>
       <plugin>
+	       <groupId>org.apache.maven.plugins</groupId>
+	       <artifactId>maven-war-plugin</artifactId>
+	       <version>2.5</version>
+      </plugin>
+      
+      <plugin>
 	    <groupId>org.apache.tomcat.maven</groupId>
         <artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.2</version>
 		<configuration>
-		  <port>8080</port>
+		  <port>9999</port>
 		  <path>/activiti-rest</path>
 		  <systemProperties>
 		    <com.sun.management.jmxremote.port>4000</com.sun.management.jmxremote.port>
           </systemProperties>
 		</configuration>
       </plugin>
+      <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-eclipse-plugin</artifactId>
+            <version>2.9</version>
+            <configuration>
+                <downloadSources>true</downloadSources>
+                <downloadJavadocs>true</downloadJavadocs>
+            </configuration>
+        </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
@@ -77,35 +94,7 @@
     </pluginManagement>
   </build>
 
-  <profiles>
-    <profile>
-	  <id>buildExecutableWar</id>
-	    <build>
-		  <plugins>
-            <plugin>
-              <groupId>org.apache.tomcat.maven</groupId>
-			  <artifactId>tomcat7-maven-plugin</artifactId>
-			  <version>2.1</version>
-			  <configuration>
-			    <path>/</path>
-			  </configuration>
-			  <executions>
-			    <execution>
-				  <id>tomcat-run</id>
-				  <goals>
-				    <goal>exec-war-only</goal>
-				  </goals>
-				  <phase>package</phase>
-				  <configuration>
-                    <path>/activiti-rest</path>
-                  </configuration>
-				</execution>
-			  </executions>
-			</plugin>
-		  </plugins>
-	  </build>
-    </profile>
-  </profiles>
+
   
   <dependencies>
     <dependency>
@@ -137,6 +126,10 @@
       <artifactId>javax.servlet-api</artifactId>
       <version>3.1.0</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.microsoft.sqlserver</groupId>
+    	<artifactId>sqljdbc4</artifactId>
     </dependency>
   </dependencies>
 </project>

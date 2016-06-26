@@ -27,7 +27,7 @@ import javax.sql.DataSource;
 import liquibase.integration.spring.SpringLiquibase;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.ejb.HibernatePersistence;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -49,9 +49,13 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @Configuration
-@EnableJpaRepositories({"com.activiti.repository"})
+@EnableJpaRepositories(
+		entityManagerFactoryRef = "entityManagerFactory",
+        transactionManagerRef = "transactionManager",
+		basePackages={"com.activiti.repository"})
+//,entityManagerFactoryRef="entityManagerFactory",transactionManagerRef="transactionManager"
 @EnableTransactionManagement
-public class DatabaseConfiguration {
+public class DatabaseConfiguration   {
 
     private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
 
@@ -154,10 +158,10 @@ public class DatabaseConfiguration {
     }
 
     @Bean(name="entityManagerFactory")
-    public EntityManagerFactory entityManagerFactory() {
+    public EntityManagerFactory  entityManagerFactory() {
         log.info("Configuring EntityManager");
         LocalContainerEntityManagerFactoryBean lcemfb = new LocalContainerEntityManagerFactoryBean();
-        lcemfb.setPersistenceProvider(new HibernatePersistence());
+        lcemfb.setPersistenceProvider(new HibernatePersistenceProvider());
         lcemfb.setPersistenceUnitName("persistenceUnit");
         lcemfb.setDataSource(dataSource());
         lcemfb.setJpaDialect(new HibernateJpaDialect());
@@ -172,6 +176,29 @@ public class DatabaseConfiguration {
         lcemfb.afterPropertiesSet();
         return lcemfb.getObject();
     }
+//    @Bean(name = "entityManagerFactory")
+//    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+//            EntityManagerFactoryBuilder builder,
+//            @Qualifier("dataSource") DataSource dataSource) {
+//    	
+//      Properties jpaProperties = new Properties();
+//      jpaProperties.put("hibernate.cache.use_second_level_cache", false);
+//      jpaProperties.put("hibernate.generate_statistics", env.getProperty("hibernate.generate_statistics", Boolean.class, false));
+//      
+//    	
+//    	LocalContainerEntityManagerFactoryBean ret= builder
+//                .dataSource(dataSource)
+//                .packages("com.activiti.domain")
+//                .persistenceUnit("persistenceUnit")                
+//                .build();
+//    	
+//    	ret.setPersistenceProvider(new HibernatePersistenceProvider());
+//    	ret.setJpaDialect(new HibernateJpaDialect());
+//    	ret.setJpaVendorAdapter(jpaVendorAdapter());
+//    	ret.setJpaProperties(jpaProperties);
+//        return ret;
+//        
+//    }
 
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
@@ -192,6 +219,12 @@ public class DatabaseConfiguration {
         jpaTransactionManager.setEntityManagerFactory(entityManagerFactory());
         return jpaTransactionManager;
     }
+//    @Bean(name = "transactionManager")
+//    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+//        final JpaTransactionManager transactionManager = new JpaTransactionManager();
+//        transactionManager.setEntityManagerFactory(emf);
+//        return transactionManager;
+//    }
 
     @Bean(name="liquibase")
     public SpringLiquibase liquibase() {
