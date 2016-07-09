@@ -18,6 +18,8 @@
 package com.activiti.service.runtime;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -178,7 +180,7 @@ public class FormProcessingServiceImpl implements FormProcessingService {
         Map<String, FormFieldRepresentation> fieldMap = definition.allFieldsAsMap();
         Map<String, Object> variables = new HashMap<String, Object>();
         ObjectNode valuesNode = objectMapper.createObjectNode();
-        submittedFormValuesJson.put("values", valuesNode);
+        submittedFormValuesJson.set("values", valuesNode);
         for (String fieldId : fieldMap.keySet()) {
             Object variableValue = null;
             FormFieldRepresentation formField = fieldMap.get(fieldId);
@@ -541,9 +543,9 @@ public class FormProcessingServiceImpl implements FormProcessingService {
 
                         if (FormFieldTypes.DATE.equals(fieldType)) {
                             try {
-                                Date value = ISO8601Utils.parse(fieldValue);
+                                Date value = ISO8601Utils.parse(fieldValue,  new ParsePosition(0));
                                 field.setValue(value);
-                            } catch (Exception e) {
+                            } catch (Exception e) {                            	
                                 logger.error("Error parsing form date value for process instance " +
                                         processInstanceId + " with value " + fieldValue, e);
                             }
@@ -695,7 +697,7 @@ public class FormProcessingServiceImpl implements FormProcessingService {
 
                             } else if (FormFieldTypes.DATE.equals(fieldTypeMap.get(fieldId))) {
                                 try {
-                                    Date value = ISO8601Utils.parse(fieldValue);
+                                    Date value = ISO8601Utils.parse(fieldValue, new ParsePosition(0));
                                     finalVariables.put(fieldId, value);
                                     variableTypes.put(fieldId, FormFieldTypes.DATE);
 
@@ -748,10 +750,13 @@ public class FormProcessingServiceImpl implements FormProcessingService {
         if (formField.getType().equals(FormFieldTypes.DATE)) {
             if (StringUtils.isNotEmpty((String) formFieldValue)) {
                 try {
-                    result = ISO8601Utils.parse((String) formFieldValue);
+                    result = ISO8601Utils.parse((String)formFieldValue,new ParsePosition(0));
                     valuesJson.put(formField.getId(), (String) formFieldValue);
                 } catch (IllegalArgumentException e) {
                     result = null;
+                }
+                catch (ParseException e){
+                	result = null;
                 }
             }
 

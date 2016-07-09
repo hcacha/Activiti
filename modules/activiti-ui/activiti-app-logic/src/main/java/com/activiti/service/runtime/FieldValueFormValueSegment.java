@@ -18,6 +18,8 @@
 package com.activiti.service.runtime;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,7 +85,13 @@ public class FieldValueFormValueSegment extends FormValueSegment {
                 return registerPlaceHolder(rawValue, field, FormFieldTypes.DATE);
                 
             } else if (FormFieldTypes.DATE.equals(fieldType) && rawValue instanceof String) {
-                Date parsedDate = ISO8601Utils.parse((String) rawValue);
+                Date parsedDate=null;
+				try {
+					parsedDate = ISO8601Utils.parse((String) rawValue,new ParsePosition(0));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					parsedDate=null;
+				}
                 if (parsedDate != null) {
                     return dateFormat.format(parsedDate);
                 }

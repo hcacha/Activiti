@@ -297,5 +297,12 @@ public interface BpmnXMLConstants {
   public static final String MAP_EXCEPTION = "mapException";
   public static final String MAP_EXCEPTION_ERRORCODE = "errorCode";
   public static final String MAP_EXCEPTION_ANDCHILDREN = "includeChildExceptions";
+  
+  public static final String ELEMENT_FIXED_VALUE_PROPERTY = "fixedValueProperty";
+  public static final String ATTRIBUTE_FIXED_VALUE_ID = "id";
+  public static final String ATTRIBUTE_FIXED_VALUE_NAME = "name";
+  public static final String ATTRIBUTE_FIXED_VALUE_TYPE = "type";
+  public static final String ATTRIBUTE_FIXED_VALUE_VALUE = "value";
+  public static final String ATTRIBUTE_FIXED_VALUE_VALUE_ID = "valueId";
 
 }

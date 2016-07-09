@@ -24,203 +24,222 @@ import java.util.Set;
  */
 public class UserTask extends Task {
 
-  protected String assignee;
-  protected String owner;
-  protected String priority;
-  protected String formKey;
-  protected String dueDate;
-  protected String category;
-  protected String extensionId;
-  protected List<String> candidateUsers = new ArrayList<String>();
-  protected List<String> candidateGroups = new ArrayList<String>();
-  protected List<FormProperty> formProperties = new ArrayList<FormProperty>();
-  protected List<ActivitiListener> taskListeners = new ArrayList<ActivitiListener>();
-  protected String skipExpression;
+	protected String assignee;
+	protected String owner;
+	protected String priority;
+	protected String formKey;
+	protected String dueDate;
+	protected String category;
+	protected String extensionId;
+	protected List<String> candidateUsers = new ArrayList<String>();
+	protected List<String> candidateGroups = new ArrayList<String>();
+	protected List<FormProperty> formProperties = new ArrayList<FormProperty>();
+	protected List<ActivitiListener> taskListeners = new ArrayList<ActivitiListener>();
+	protected String skipExpression;
 
-  protected Map<String, Set<String>> customUserIdentityLinks = new HashMap<String, Set<String>>(); 
-  protected Map<String, Set<String>> customGroupIdentityLinks = new HashMap<String, Set<String>>();
-  
-  protected List<CustomProperty> customProperties = new ArrayList<CustomProperty>();
+	protected Map<String, Set<String>> customUserIdentityLinks = new HashMap<String, Set<String>>();
+	protected Map<String, Set<String>> customGroupIdentityLinks = new HashMap<String, Set<String>>();
 
-  public String getAssignee() {
-    return assignee;
-  }
+	protected List<CustomProperty> customProperties = new ArrayList<CustomProperty>();
 
-  public void setAssignee(String assignee) {
-    this.assignee = assignee;
-  }
+	protected List<FixedValueProperty> fixedValueProperties = new ArrayList<FixedValueProperty>();
 
-  public String getOwner() {
-    return owner;
-  }
+	public String getAssignee() {
+		return assignee;
+	}
 
-  public void setOwner(String owner) {
-    this.owner = owner;
-  }
+	public void setAssignee(String assignee) {
+		this.assignee = assignee;
+	}
 
-  public String getPriority() {
-    return priority;
-  }
+	public String getOwner() {
+		return owner;
+	}
 
-  public void setPriority(String priority) {
-    this.priority = priority;
-  }
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
 
-  public String getFormKey() {
-    return formKey;
-  }
+	public String getPriority() {
+		return priority;
+	}
 
-  public void setFormKey(String formKey) {
-    this.formKey = formKey;
-  }
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
 
-  public String getDueDate() {
-    return dueDate;
-  }
+	public String getFormKey() {
+		return formKey;
+	}
 
-  public void setDueDate(String dueDate) {
-    this.dueDate = dueDate;
-  }
+	public void setFormKey(String formKey) {
+		this.formKey = formKey;
+	}
 
-  public String getCategory() {
-    return category;
-  }
+	public String getDueDate() {
+		return dueDate;
+	}
 
-  public void setCategory(String category) {
-    this.category = category;
-  }
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
 
-  public String getExtensionId() {
-    return extensionId;
-  }
+	public String getCategory() {
+		return category;
+	}
 
-  public void setExtensionId(String extensionId) {
-    this.extensionId = extensionId;
-  }
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
-  public boolean isExtended() {
-    return extensionId != null && !extensionId.isEmpty();
-  }
+	public String getExtensionId() {
+		return extensionId;
+	}
+
+	public void setExtensionId(String extensionId) {
+		this.extensionId = extensionId;
+	}
+
+	public boolean isExtended() {
+		return extensionId != null && !extensionId.isEmpty();
+	}
+
 	public List<String> getCandidateUsers() {
-    return candidateUsers;
-  }
+		return candidateUsers;
+	}
 
-  public void setCandidateUsers(List<String> candidateUsers) {
-    this.candidateUsers = candidateUsers;
-  }
+	public void setCandidateUsers(List<String> candidateUsers) {
+		this.candidateUsers = candidateUsers;
+	}
 
-  public List<String> getCandidateGroups() {
-    return candidateGroups;
-  }
+	public List<String> getCandidateGroups() {
+		return candidateGroups;
+	}
 
-  public void setCandidateGroups(List<String> candidateGroups) {
-    this.candidateGroups = candidateGroups;
-  }
+	public void setCandidateGroups(List<String> candidateGroups) {
+		this.candidateGroups = candidateGroups;
+	}
 
-  public List<FormProperty> getFormProperties() {
-    return formProperties;
-  }
+	public List<FormProperty> getFormProperties() {
+		return formProperties;
+	}
 
-  public void setFormProperties(List<FormProperty> formProperties) {
-    this.formProperties = formProperties;
-  }
+	public void setFormProperties(List<FormProperty> formProperties) {
+		this.formProperties = formProperties;
+	}
 
-  public List<ActivitiListener> getTaskListeners() {
-    return taskListeners;
-  }
+	public List<ActivitiListener> getTaskListeners() {
+		return taskListeners;
+	}
 
-  public void setTaskListeners(List<ActivitiListener> taskListeners) {
-    this.taskListeners = taskListeners;
-  }
+	public void setTaskListeners(List<ActivitiListener> taskListeners) {
+		this.taskListeners = taskListeners;
+	}
 
-  public void addCustomUserIdentityLink(String userId, String type) {
-    Set<String> userIdentitySet = customUserIdentityLinks.get(type);
+	public void addCustomUserIdentityLink(String userId, String type) {
+		Set<String> userIdentitySet = customUserIdentityLinks.get(type);
 
-    if (userIdentitySet == null) {
-      userIdentitySet = new HashSet<String>();
-      customUserIdentityLinks.put(type, userIdentitySet);
-    }
+		if (userIdentitySet == null) {
+			userIdentitySet = new HashSet<String>();
+			customUserIdentityLinks.put(type, userIdentitySet);
+		}
 
-    userIdentitySet.add(userId);
-  }
+		userIdentitySet.add(userId);
+	}
 
-  public void addCustomGroupIdentityLink(String groupId, String type) {
-    Set<String> groupIdentitySet = customGroupIdentityLinks.get(type);
+	public void addCustomGroupIdentityLink(String groupId, String type) {
+		Set<String> groupIdentitySet = customGroupIdentityLinks.get(type);
 
-    if (groupIdentitySet == null) {
-      groupIdentitySet = new HashSet<String>();
-      customGroupIdentityLinks.put(type, groupIdentitySet);
-    }
+		if (groupIdentitySet == null) {
+			groupIdentitySet = new HashSet<String>();
+			customGroupIdentityLinks.put(type, groupIdentitySet);
+		}
 
-    groupIdentitySet.add(groupId);
-  }
+		groupIdentitySet.add(groupId);
+	}
 
-  public Map<String, Set<String>> getCustomUserIdentityLinks() {
-    return customUserIdentityLinks;
-  }
+	public Map<String, Set<String>> getCustomUserIdentityLinks() {
+		return customUserIdentityLinks;
+	}
 
-  public void setCustomUserIdentityLinks(Map<String, Set<String>> customUserIdentityLinks) {
-    this.customUserIdentityLinks = customUserIdentityLinks;
-  }
+	public void setCustomUserIdentityLinks(Map<String, Set<String>> customUserIdentityLinks) {
+		this.customUserIdentityLinks = customUserIdentityLinks;
+	}
 
-  public Map<String, Set<String>> getCustomGroupIdentityLinks() {
-    return customGroupIdentityLinks;
-  }
+	public Map<String, Set<String>> getCustomGroupIdentityLinks() {
+		return customGroupIdentityLinks;
+	}
 
-  public void setCustomGroupIdentityLinks(Map<String, Set<String>> customGroupIdentityLinks) {
-    this.customGroupIdentityLinks = customGroupIdentityLinks;
-  }
-  
-  public List<CustomProperty> getCustomProperties() {
-    return customProperties;
-  }
-  public void setCustomProperties(List<CustomProperty> customProperties) {
-    this.customProperties = customProperties;
-  }
-  
-  public String getSkipExpression() {
-    return skipExpression;
-  }
+	public void setCustomGroupIdentityLinks(Map<String, Set<String>> customGroupIdentityLinks) {
+		this.customGroupIdentityLinks = customGroupIdentityLinks;
+	}
 
-  public void setSkipExpression(String skipExpression) {
-    this.skipExpression = skipExpression;
-  }
+	public List<CustomProperty> getCustomProperties() {
+		return customProperties;
+	}
 
-  public UserTask clone() {
-    UserTask clone = new UserTask();
-    clone.setValues(this);
-    return clone;
-  }
+	public void setCustomProperties(List<CustomProperty> customProperties) {
+		this.customProperties = customProperties;
+	}
 
-  public void setValues(UserTask otherElement) {
-    super.setValues(otherElement);
-    setAssignee(otherElement.getAssignee());
-    setOwner(otherElement.getOwner());
-    setFormKey(otherElement.getFormKey());
-    setDueDate(otherElement.getDueDate());
-    setPriority(otherElement.getPriority());
-    setCategory(otherElement.getCategory());
-    setExtensionId(otherElement.getExtensionId());
-    setSkipExpression(otherElement.getSkipExpression());
-    
-    setCandidateGroups(new ArrayList<String>(otherElement.getCandidateGroups()));
-    setCandidateUsers(new ArrayList<String>(otherElement.getCandidateUsers()));
+	public String getSkipExpression() {
+		return skipExpression;
+	}
 
-    setCustomGroupIdentityLinks(otherElement.customGroupIdentityLinks);
-    setCustomUserIdentityLinks(otherElement.customUserIdentityLinks);
+	public void setSkipExpression(String skipExpression) {
+		this.skipExpression = skipExpression;
+	}
 
-    formProperties = new ArrayList<FormProperty>();
-    if (otherElement.getFormProperties() != null && !otherElement.getFormProperties().isEmpty()) {
-      for (FormProperty property : otherElement.getFormProperties()) {
-        formProperties.add(property.clone());
-      }
-    }
+	public List<FixedValueProperty> getFixedValueProperties() {
+		return this.fixedValueProperties;
+	}
 
-    taskListeners = new ArrayList<ActivitiListener>();
-    if (otherElement.getTaskListeners() != null && !otherElement.getTaskListeners().isEmpty()) {
-      for (ActivitiListener listener : otherElement.getTaskListeners()) {
-        taskListeners.add(listener.clone());
-      }
-    }
-  }
+	public void setFixedValueProperties(List<FixedValueProperty> fixedValueProperties) {
+		this.fixedValueProperties = fixedValueProperties;
+	}
+
+	public UserTask clone() {
+		UserTask clone = new UserTask();
+		clone.setValues(this);
+		return clone;
+	}
+
+	public void setValues(UserTask otherElement) {
+		super.setValues(otherElement);
+		setAssignee(otherElement.getAssignee());
+		setOwner(otherElement.getOwner());
+		setFormKey(otherElement.getFormKey());
+		setDueDate(otherElement.getDueDate());
+		setPriority(otherElement.getPriority());
+		setCategory(otherElement.getCategory());
+		setExtensionId(otherElement.getExtensionId());
+		setSkipExpression(otherElement.getSkipExpression());
+
+		setCandidateGroups(new ArrayList<String>(otherElement.getCandidateGroups()));
+		setCandidateUsers(new ArrayList<String>(otherElement.getCandidateUsers()));
+
+		setCustomGroupIdentityLinks(otherElement.customGroupIdentityLinks);
+		setCustomUserIdentityLinks(otherElement.customUserIdentityLinks);
+
+		formProperties = new ArrayList<FormProperty>();
+		if (otherElement.getFormProperties() != null && !otherElement.getFormProperties().isEmpty()) {
+			for (FormProperty property : otherElement.getFormProperties()) {
+				formProperties.add(property.clone());
+			}
+		}
+
+		taskListeners = new ArrayList<ActivitiListener>();
+		if (otherElement.getTaskListeners() != null && !otherElement.getTaskListeners().isEmpty()) {
+			for (ActivitiListener listener : otherElement.getTaskListeners()) {
+				taskListeners.add(listener.clone());
+			}
+		}
+		
+		fixedValueProperties = new ArrayList<FixedValueProperty>();
+		if (otherElement.getFixedValueProperties()!= null && !otherElement.getFixedValueProperties().isEmpty()) {
+			for (FixedValueProperty property : otherElement.getFixedValueProperties()) {
+				fixedValueProperties.add(property.clone());
+			}
+		}
+	}
 }

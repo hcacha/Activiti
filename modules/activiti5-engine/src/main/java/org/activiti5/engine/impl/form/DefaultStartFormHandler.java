@@ -29,7 +29,12 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class DefaultStartFormHandler extends DefaultFormHandler implements StartFormHandler {
   
-  @Override
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+@Override
   public void parseConfiguration(List<FormProperty> formProperties, String formKey, DeploymentEntity deployment, ProcessDefinitionEntity processDefinition) {
     super.parseConfiguration(formProperties, formKey, deployment, processDefinition);
     if (StringUtils.isNotEmpty(formKey)) {

@@ -286,7 +286,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
         
         addFormProperties(userTask.getFormProperties(), propertiesNode);
         
-        addCustomExtensionElement(userTask,propertiesNode);
+        addFixedValueProperties(userTask.getFixedValueProperties(),propertiesNode);
     }
     
     protected int getExtensionElementValueAsInt(String name, UserTask userTask) {
@@ -382,7 +382,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
             }
         }
         convertJsonToFormProperties(elementNode, task);        
-        convertJsonToCustomExtensionElement(elementNode,task);
+        convertJsonToFixedValueProperties(elementNode, task);
         
         return task;
     }
@@ -580,94 +580,5 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
         extensionElement.setName(name);
         extensionElement.setElementText(elementText);
         return extensionElement;
-    }   
-    protected void convertJsonToCustomExtensionElement(JsonNode objectNode,UserTask task) {
-        JsonNode extensionElementsNode = getProperty(PROPERTY_USERTASK_CUSTOM_EXTENSION_ELEMENTS, objectNode);
-        if (extensionElementsNode != null) {
-        	extensionElementsNode = BpmnJsonConverterUtil.validateIfNodeIsTextual(extensionElementsNode);
-            JsonNode propertiesArray = extensionElementsNode.get("customExtensionElements");
-            if (propertiesArray != null) {
-            	ExtensionElement baseExtensionElement= null;
-                for (JsonNode extensionNode : propertiesArray) {
-                    JsonNode extensionName = extensionNode.get(PROPERTY_EXTENSION_ELEMENT_NAME);
-                    if (extensionName != null && StringUtils.isNotEmpty(extensionName.asText())) {
-                    	if(baseExtensionElement==null) baseExtensionElement=createExtensionElement(CUSTOM_EXTENSION_ELEMENT_NAME, "");
-                    	
-                    	ExtensionElement extensionElement=createExtensionElement(extensionName.asText(),getValueAsString(PROPERTY_EXTENSION_ELEMENT_TEXT, extensionNode));
-                    	
-                    	JsonNode childsNode= extensionNode.get(PROPERTY_EXTENSION_ELEMENT_CHILDS);
-                    	if(childsNode !=null){
-                    		createExtensionElementsChilds(childsNode,extensionElement);
-                    	}
-                    	baseExtensionElement.addChildElement(extensionElement);                    
-                    }
-                }
-                if(baseExtensionElement!=null){
-                	 task.addExtensionElement(baseExtensionElement);
-                }
-            }
-        }
     }
-    private void  createExtensionElementsChilds(JsonNode propertiesArray,ExtensionElement extensionElementParent){
-    	
-    	 for (JsonNode extensionNode : propertiesArray) {
-    		 JsonNode extensionName = extensionNode.get(PROPERTY_EXTENSION_ELEMENT_NAME);
-             if (extensionName != null && StringUtils.isNotEmpty(extensionName.asText())) {
-            	ExtensionElement extensionElement=createExtensionElement(extensionName.asText(),getValueAsString(PROPERTY_EXTENSION_ELEMENT_TEXT, extensionNode));
-            	 
-            	JsonNode childsNode= extensionNode.get(PROPERTY_EXTENSION_ELEMENT_CHILDS);
-             	if(childsNode !=null){
-             		createExtensionElementsChilds(childsNode,extensionElement);
-             	}             	
-             	extensionElementParent.addChildElement(extensionElement); 
-             }         	
-    	 }
-    }
-    protected void addCustomExtensionElement(UserTask userTask, ObjectNode propertiesNode) {
-    	
-    	List<ExtensionElement> elements= userTask.getExtensionElements().get(CUSTOM_EXTENSION_ELEMENT_NAME);
-    	if(elements==null || elements.isEmpty()){
-    		return;
-    	}
-    	ExtensionElement extensionElement= elements.get(0);
-        Map<String, List<ExtensionElement>> childsElements= extensionElement.getChildElements();    
-        if(childsElements==null || childsElements.isEmpty()){
-        	return;
-        }        
-        ObjectNode customExtensionElementNode = objectMapper.createObjectNode();
-    	ArrayNode propertiesChildArrayNode = objectMapper.createArrayNode();
-     	for(String key :childsElements.keySet()){     		
-     		ExtensionElement otherElement= childsElements.get(key).get(0);
-     		ObjectNode propertyItemNode = objectMapper.createObjectNode();            
-            
-            propertyItemNode.put(PROPERTY_EXTENSION_ELEMENT_NAME, otherElement.getName());
-            propertyItemNode.put(PROPERTY_EXTENSION_ELEMENT_TEXT, otherElement.getElementText());           
-                        
-            addChildsCustomExtensionElement(otherElement,propertyItemNode);            
-     		propertiesChildArrayNode.add(propertyItemNode);
-     	}        
-     	customExtensionElementNode.set("customExtensionElements", propertiesChildArrayNode);
-        propertiesNode.set(PROPERTY_USERTASK_CUSTOM_EXTENSION_ELEMENTS, customExtensionElementNode);
-    }
-    private void addChildsCustomExtensionElement(ExtensionElement extensionElement, ObjectNode propertiesNodeParent) {
-    	 Map<String, List<ExtensionElement>> childsElements= extensionElement.getChildElements();         
-         if(childsElements!=null && !childsElements.isEmpty()){
-        	ArrayNode propertiesChildArrayNode = null;
-         	for(String key :childsElements.keySet()){
-         		if(propertiesChildArrayNode==null) propertiesChildArrayNode=objectMapper.createArrayNode();
-         		ExtensionElement otherElement= childsElements.get(key).get(0);
-         		ObjectNode propertyItemNode = objectMapper.createObjectNode();            
-                
-                propertyItemNode.put(PROPERTY_EXTENSION_ELEMENT_NAME, otherElement.getName());
-                propertyItemNode.put(PROPERTY_EXTENSION_ELEMENT_TEXT, otherElement.getElementText());
-                
-                addChildsCustomExtensionElement(otherElement,propertyItemNode);
-                
-         		propertiesChildArrayNode.add(propertyItemNode);
-         	}
-         	if(propertiesChildArrayNode!=null) propertiesNodeParent.set(PROPERTY_EXTENSION_ELEMENT_CHILDS, propertiesChildArrayNode);
-         }   
-    }
-
-
 }

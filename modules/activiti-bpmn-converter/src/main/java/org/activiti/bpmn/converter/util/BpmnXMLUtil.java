@@ -28,6 +28,7 @@ import org.activiti.bpmn.converter.child.DocumentationParser;
 import org.activiti.bpmn.converter.child.ErrorEventDefinitionParser;
 import org.activiti.bpmn.converter.child.ExecutionListenerParser;
 import org.activiti.bpmn.converter.child.FieldExtensionParser;
+import org.activiti.bpmn.converter.child.FixedValuePropertyParser;
 import org.activiti.bpmn.converter.child.FlowNodeRefParser;
 import org.activiti.bpmn.converter.child.FormPropertyParser;
 import org.activiti.bpmn.converter.child.IOSpecificationParser;
@@ -77,6 +78,7 @@ public class BpmnXMLUtil implements BpmnXMLConstants {
     addGenericParser(new FlowNodeRefParser());
     addGenericParser(new ActivitiFailedjobRetryParser());
     addGenericParser(new ActivitiMapExceptionParser());
+    addGenericParser(new FixedValuePropertyParser());
   }
 
   private static void addGenericParser(BaseChildElementParser parser) {

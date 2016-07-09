@@ -38,6 +38,7 @@ import org.activiti.bpmn.model.Event;
 import org.activiti.bpmn.model.EventDefinition;
 import org.activiti.bpmn.model.ExtensionAttribute;
 import org.activiti.bpmn.model.ExtensionElement;
+import org.activiti.bpmn.model.FixedValueProperty;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.FlowNode;
 import org.activiti.bpmn.model.FormProperty;
@@ -515,4 +516,37 @@ public abstract class BaseBpmnXMLConverter implements BpmnXMLConstants {
   protected void writeQualifiedAttribute(String attributeName, String value, XMLStreamWriter xtw) throws Exception {
     BpmnXMLUtil.writeQualifiedAttribute(attributeName, value, xtw);
   }
+  protected boolean writeFixedValueProperties(FlowElement flowElement, boolean didWriteExtensionStartElement, XMLStreamWriter xtw) throws Exception {
+
+	    List<FixedValueProperty> propertyList = null;
+	    if (flowElement instanceof UserTask) {
+	      propertyList = ((UserTask) flowElement).getFixedValueProperties();
+	    }
+	    if (propertyList != null) {
+
+	      for (FixedValueProperty property : propertyList) {
+
+	        if (StringUtils.isNotEmpty(property.getId())) {
+
+	          if (didWriteExtensionStartElement == false) {
+	            xtw.writeStartElement(ELEMENT_EXTENSIONS);
+	            didWriteExtensionStartElement = true;
+	          }
+
+	          xtw.writeStartElement(ACTIVITI_EXTENSIONS_PREFIX, ELEMENT_FIXED_VALUE_PROPERTY, ACTIVITI_EXTENSIONS_NAMESPACE);
+	          writeDefaultAttribute(ATTRIBUTE_FIXED_VALUE_ID, property.getId(), xtw);
+
+	          writeDefaultAttribute(ATTRIBUTE_FIXED_VALUE_NAME, property.getName(), xtw);
+	          writeDefaultAttribute(ATTRIBUTE_FIXED_VALUE_TYPE, property.getType(), xtw);
+	          writeDefaultAttribute(ATTRIBUTE_FIXED_VALUE_VALUE, property.getValue(), xtw);
+	          writeDefaultAttribute(ATTRIBUTE_FIXED_VALUE_VALUE_ID, property.getIdValue(), xtw);	                 
+
+	          xtw.writeEndElement();
+	        }
+	      }
+	    }
+
+	    return didWriteExtensionStartElement;
+	  }
+
 }
