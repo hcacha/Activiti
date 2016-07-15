@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.ExtensionElement;
+import org.activiti.bpmn.model.FixedValueProperty;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.editor.language.json.converter.util.CollectionUtils;
@@ -31,13 +32,17 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.task.TaskInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import com.activiti.domain.idm.Group;
 import com.activiti.domain.idm.User;
+import com.activiti.model.idm.LightUserRepresentation;
+import com.activiti.model.runtime.FixedValueRepresentation;
 import com.activiti.model.runtime.TaskRepresentation;
+import com.activiti.service.api.UserCache.CachedUser;
 
 public class TaskUtil {
     
@@ -150,6 +155,7 @@ public class TaskUtil {
                             isMemberOfCandidateUsers = true;
                         }
                     }
+                    taskRepresentation.setFixedValues(convertFixedValueList(userTask.getFixedValueProperties()));
                 }
             }
         }
@@ -159,4 +165,15 @@ public class TaskUtil {
         taskRepresentation.setMemberOfCandidateGroup(isMemberOfCandidateGroup);
         taskRepresentation.setMemberOfCandidateUsers(isMemberOfCandidateUsers);
     }
+    private static List<FixedValueRepresentation> convertFixedValueList(List<? extends FixedValueProperty> fixedValues) {
+	    List<FixedValueRepresentation> results = new ArrayList<FixedValueRepresentation>();
+	    if (CollectionUtils.isNotEmpty(fixedValues)) {
+	        for (FixedValueProperty fixedValueProperty : fixedValues) {
+	        	
+	        	FixedValueRepresentation representation = new FixedValueRepresentation(fixedValueProperty);	        	
+                results.add(representation);
+            }
+	    }
+	    return results;
+	}
 }

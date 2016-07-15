@@ -238,7 +238,7 @@ public interface StencilConstants {
   final String PROPERTY_TERMINATE_MULTI_INSTANCE = "terminateMultiInstance";
   
   
-  final String PROPERTY_FIXED_VALUE_PROPERTIES = "fixedValueProperties";  
+  final String PROPERTY_FIXED_VALUE_PROPERTIES = "fixedvalueproperties";  
   final String PROPERTY_FIXED_VALUE_ID = "id";
   final String PROPERTY_FIXED_VALUE_NAME = "name";
   final String PROPERTY_FIXED_VALUE_TYPE = "type";  

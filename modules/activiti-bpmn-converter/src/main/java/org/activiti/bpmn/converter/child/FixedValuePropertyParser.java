@@ -31,7 +31,7 @@ public class FixedValuePropertyParser extends BaseChildElementParser {
 		property.setName(xtr.getAttributeValue(null, ATTRIBUTE_FIXED_VALUE_NAME));
 		property.setType(xtr.getAttributeValue(null, ATTRIBUTE_FIXED_VALUE_TYPE));
 		property.setValue(xtr.getAttributeValue(null, ATTRIBUTE_FIXED_VALUE_VALUE));
-		property.setIdValue(xtr.getAttributeValue(null, ATTRIBUTE_FIXED_VALUE_VALUE_ID));	
+		property.setValueId(xtr.getAttributeValue(null, ATTRIBUTE_FIXED_VALUE_VALUE_ID));	
 
 		if (parentElement instanceof UserTask) {
 			((UserTask) parentElement).getFixedValueProperties().add(property);

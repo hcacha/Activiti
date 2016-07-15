@@ -539,7 +539,7 @@ public abstract class BaseBpmnXMLConverter implements BpmnXMLConstants {
 	          writeDefaultAttribute(ATTRIBUTE_FIXED_VALUE_NAME, property.getName(), xtw);
 	          writeDefaultAttribute(ATTRIBUTE_FIXED_VALUE_TYPE, property.getType(), xtw);
 	          writeDefaultAttribute(ATTRIBUTE_FIXED_VALUE_VALUE, property.getValue(), xtw);
-	          writeDefaultAttribute(ATTRIBUTE_FIXED_VALUE_VALUE_ID, property.getIdValue(), xtw);	                 
+	          writeDefaultAttribute(ATTRIBUTE_FIXED_VALUE_VALUE_ID, property.getValueId(), xtw);	                 
 
 	          xtw.writeEndElement();
 	        }

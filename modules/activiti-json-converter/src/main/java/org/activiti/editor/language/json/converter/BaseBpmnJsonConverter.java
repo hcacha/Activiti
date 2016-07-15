@@ -712,7 +712,7 @@ public abstract class BaseBpmnJsonConverter implements EditorJsonConstants, Sten
                         fixedValueProperty.setName(getValueAsString(PROPERTY_FIXED_VALUE_NAME, fixedValueNode));
                         fixedValueProperty.setType(getValueAsString(PROPERTY_FIXED_VALUE_TYPE, fixedValueNode));
                         fixedValueProperty.setValue(getValueAsString(PROPERTY_FIXED_VALUE_VALUE, fixedValueNode));
-                        fixedValueProperty.setIdValue(getValueAsString(PROPERTY_FIXED_VALUE_VALUE_ID, fixedValueNode));                        
+                        fixedValueProperty.setValueId(getValueAsString(PROPERTY_FIXED_VALUE_VALUE_ID, fixedValueNode));                        
 
                         if (element instanceof UserTask) {
                             ((UserTask) element).getFixedValueProperties().add(fixedValueProperty);
@@ -734,7 +734,7 @@ public abstract class BaseBpmnJsonConverter implements EditorJsonConstants, Sten
             propertyItemNode.put(PROPERTY_FIXED_VALUE_NAME, property.getName());
             propertyItemNode.put(PROPERTY_FIXED_VALUE_TYPE, property.getType());
             propertyItemNode.put(PROPERTY_FIXED_VALUE_VALUE, property.getValue());
-            propertyItemNode.put(PROPERTY_FIXED_VALUE_VALUE_ID, property.getIdValue());
+            propertyItemNode.put(PROPERTY_FIXED_VALUE_VALUE_ID, property.getValueId());
 
             propertiesArrayNode.add(propertyItemNode);
         }

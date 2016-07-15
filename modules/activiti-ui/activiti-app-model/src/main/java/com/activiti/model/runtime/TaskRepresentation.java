@@ -66,6 +66,10 @@ public class TaskRepresentation extends AbstractRepresentation {
     @JsonInclude(Include.NON_NULL)
     protected List<LightUserRepresentation> involvedPeople;
     
+    @JsonDeserialize(contentAs=FixedValueRepresentation.class)
+    @JsonInclude(Include.NON_NULL)
+    protected List<FixedValueRepresentation> fixedValues;
+    
     // Needed for serialization!
     public TaskRepresentation() {}
     
@@ -324,5 +328,12 @@ public class TaskRepresentation extends AbstractRepresentation {
     
     public void setInvolvedPeople(List<LightUserRepresentation> involvedPeople) {
         this.involvedPeople = involvedPeople;
+    }
+    public List<FixedValueRepresentation> getFixedValues() {
+        return this.fixedValues;
+    }
+    
+    public void setFixedValues(List<FixedValueRepresentation> fixedValues) {
+        this.fixedValues = fixedValues;
     }
 }

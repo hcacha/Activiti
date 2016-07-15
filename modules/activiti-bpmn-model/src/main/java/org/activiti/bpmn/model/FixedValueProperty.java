@@ -13,14 +13,14 @@
 package org.activiti.bpmn.model;
 
 /**
- * @author Tijs Rademakers
+ * @author Hugo Cacha
  */
 public class FixedValueProperty extends BaseElement {
 
 	protected String name;
 	protected String type;
 	protected String value;
-	protected String idValue;
+	protected String valueId;
 
 	public String getName() {
 		return name;
@@ -45,12 +45,12 @@ public class FixedValueProperty extends BaseElement {
 		this.value = value;
 	}
 
-	public String getIdValue() {
-		return idValue;
+	public String getValueId() {
+		return this.valueId;
 	}
 
-	public void setIdValue(String idValue) {
-		this.idValue = idValue;
+	public void setValueId(String valueId) {
+		this.valueId = valueId;
 	}
 
 	public FixedValueProperty clone() {
@@ -64,7 +64,7 @@ public class FixedValueProperty extends BaseElement {
 		setName(otherProperty.getName());		
 		setType(otherProperty.getType());
 		setValue(otherProperty.getValue());
-		setIdValue(otherProperty.getIdValue());		
+		setValueId(otherProperty.getValueId());		
 	}
 
 }
